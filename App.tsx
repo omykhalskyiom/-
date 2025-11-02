@@ -3,6 +3,7 @@ import Navigation from './components/Navigation';
 import MainContent from './components/MainContent';
 import ShoppingCart from './components/ShoppingCart';
 import ProductModal from './components/ProductModal';
+import CheckoutModal from './components/CheckoutModal';
 import { Product, CartItem } from './types';
 import { MenuIcon, ShoppingCartIcon as HeaderCartIcon, SearchIcon, XIcon } from './components/icons/IconComponents';
 
@@ -94,6 +95,8 @@ const App: React.FC = () => {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isModalClosing, setIsModalClosing] = useState(false);
   const [wishlist, setWishlist] = useState<number[]>([]);
+  const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
+  const [isCheckoutModalClosing, setIsCheckoutModalClosing] = useState(false);
 
   const debouncedSearchQuery = useDebounce(searchQuery, 300);
 
@@ -174,6 +177,25 @@ const App: React.FC = () => {
   };
   
   const toggleNav = () => setIsNavOpen(!isNavOpen);
+  
+  const handleOpenCheckout = () => {
+    setIsCartOpen(false);
+    setIsAnimatingOut(false);
+    setIsCheckoutModalOpen(true);
+    setIsCheckoutModalClosing(false);
+  };
+
+  const handleCloseCheckout = () => {
+    setIsCheckoutModalClosing(true);
+    setTimeout(() => {
+      setIsCheckoutModalOpen(false);
+      setIsCheckoutModalClosing(false);
+    }, MODAL_CLOSE_ANIMATION_DURATION);
+  };
+  
+  const handleSubmitOrder = () => {
+    setCartItems([]);
+  };
 
   const totalItemsInCart = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
@@ -290,6 +312,7 @@ const App: React.FC = () => {
               onRemoveItem={handleRemoveFromCart}
               onUpdateQuantity={handleUpdateQuantity}
               onClose={toggleCart}
+              onCheckout={handleOpenCheckout}
             />
           </aside>
           <div 
@@ -308,6 +331,15 @@ const App: React.FC = () => {
           wishlist={wishlist}
           onToggleWishlist={handleToggleWishlist}
           isClosing={isModalClosing}
+        />
+      )}
+
+      {/* Checkout Modal */}
+      {isCheckoutModalOpen && (
+        <CheckoutModal
+          onClose={handleCloseCheckout}
+          onSubmitOrder={handleSubmitOrder}
+          isClosing={isCheckoutModalClosing}
         />
       )}
     </div>

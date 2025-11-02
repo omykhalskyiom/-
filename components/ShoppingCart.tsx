@@ -7,9 +7,10 @@ interface ShoppingCartProps {
   onRemoveItem: (productId: number) => void;
   onUpdateQuantity: (productId: number, newQuantity: number) => void;
   onClose: () => void;
+  onCheckout: () => void;
 }
 
-const ShoppingCart: React.FC<ShoppingCartProps> = ({ items, onRemoveItem, onUpdateQuantity, onClose }) => {
+const ShoppingCart: React.FC<ShoppingCartProps> = ({ items, onRemoveItem, onUpdateQuantity, onClose, onCheckout }) => {
   const totalPrice = items.reduce((total, item) => total + item.price * item.quantity, 0);
 
   return (
@@ -60,7 +61,10 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({ items, onRemoveItem, onUpda
             <span className="text-secondary-text">Всього:</span>
             <span className="text-primary-text">{totalPrice.toFixed(2)} грн</span>
           </div>
-          <button className="w-full py-3 bg-gradient-to-r from-gradient-start to-gradient-end text-background font-bold rounded-lg shadow-lg hover:shadow-gold-glow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-primary transition-all duration-300">
+          <button 
+            onClick={onCheckout}
+            className="w-full py-3 bg-gradient-to-r from-gradient-start to-gradient-end text-background font-bold rounded-lg shadow-lg hover:shadow-gold-glow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-primary transition-all duration-300"
+          >
             Оформити замовлення
           </button>
         </div>
