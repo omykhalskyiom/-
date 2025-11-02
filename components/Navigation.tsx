@@ -17,7 +17,7 @@ const NavLink: React.FC<NavLinkProps> = ({ icon, label, active = false, onClick,
       onClick?.();
     }}
     className={`
-      flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-300 group relative
+      flex items-center justify-center md:justify-start px-4 py-3 text-sm font-medium rounded-lg transition-all duration-300 group relative
       transform-gpu hover:scale-105
       ${
         active
@@ -27,37 +27,41 @@ const NavLink: React.FC<NavLinkProps> = ({ icon, label, active = false, onClick,
     `}
   >
     {icon}
-    <span className="ml-3">{label}</span>
+    <span className="ml-3 hidden md:inline">{label}</span>
     {count > 0 && (
-      <span className="ml-auto bg-primary text-background text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full">
+      <span className="ml-auto hidden md:inline-flex bg-primary text-background text-xs font-bold w-5 h-5 items-center justify-center rounded-full">
         {count}
       </span>
     )}
     
-    {/* Underline for active state */}
+    {/* Underline for active state on desktop */}
     {active && (
-      <span className="absolute bottom-1.5 left-4 h-0.5 w-[calc(100%-2rem)] bg-gradient-to-r from-gradient-start to-gradient-end rounded-full"></span>
+      <span className="absolute bottom-1.5 left-4 h-0.5 w-[calc(100%-2rem)] bg-gradient-to-r from-gradient-start to-gradient-end rounded-full hidden md:block"></span>
     )}
     
-    {/* Underline animation for hover state on non-active links */}
+    {/* Underline animation for hover state on non-active links on desktop */}
     {!active && (
       <span className="
         absolute bottom-1.5 left-4 h-0.5 w-[calc(100%-2rem)] bg-highlight
         transform scale-x-0 group-hover:scale-x-100
-        transition-transform duration-300 ease-in-out origin-left
+        transition-transform duration-300 ease-in-out origin-left hidden md:block
       "></span>
+    )}
+    
+    {/* Dot indicator for active state on mobile */}
+    {active && (
+        <span className="absolute bottom-1.5 left-1/2 -translate-x-1/2 h-1.5 w-1.5 bg-primary rounded-full md:hidden"></span>
     )}
   </a>
 );
 
 interface NavigationProps {
-  onClose?: () => void;
   selectedCategory: string;
   onSelectCategory: (category: string) => void;
   wishlistCount: number;
 }
 
-const Navigation: React.FC<NavigationProps> = ({ onClose, selectedCategory, onSelectCategory, wishlistCount }) => {
+const Navigation: React.FC<NavigationProps> = ({ selectedCategory, onSelectCategory, wishlistCount }) => {
   const categories = [
     { name: 'Головна', icon: <HomeIcon className="h-5 w-5" /> },
     { name: 'Обране', icon: <HeartIcon className="h-5 w-5 fill-none" /> },
@@ -70,16 +74,11 @@ const Navigation: React.FC<NavigationProps> = ({ onClose, selectedCategory, onSe
 
   return (
     <aside className="w-full h-full bg-background border-r border-primary/10 flex flex-col">
-      <div className="p-4 md:p-6 flex items-center justify-between border-b border-primary/10">
+      <div className="p-4 md:p-6 flex items-center justify-center md:justify-start border-b border-primary/10">
         <div className="flex items-center">
           <StoreIcon className="h-8 w-8 text-primary" />
-          <h1 className="ml-3 text-xl font-bold text-primary-text">ШВИДКА ХАВКА</h1>
+          <h1 className="ml-3 text-xl font-bold text-primary-text hidden md:inline">ШВИДКА ХАВКА</h1>
         </div>
-        {onClose && (
-            <button onClick={onClose} className="md:hidden p-2 text-secondary-text hover:text-highlight">
-                <XIcon className="h-6 w-6" />
-            </button>
-        )}
       </div>
       <div className="p-4 md:p-6 flex-grow">
         <nav className="space-y-2">
