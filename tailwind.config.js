@@ -72,6 +72,26 @@ tailwind.config = {
           'from': { opacity: '1', transform: 'scale(1)' },
           'to': { opacity: '0', transform: 'scale(0.9)' },
         },
+        'chat-widget-in': {
+          'from': { transform: 'translateY(20px) scale(0.95)', opacity: '0' },
+          'to': { transform: 'translateY(0) scale(1)', opacity: '1' },
+        },
+        'chat-widget-out': {
+            'from': { transform: 'translateY(0) scale(1)', opacity: '1' },
+            'to': { transform: 'translateY(20px) scale(0.95)', opacity: '0' },
+        },
+        'chat-pulse': {
+            '0%, 100%': { transform: 'scale(1)', boxShadow: '0 0 15px rgba(212, 175, 55, 0.4)' },
+            '50%': { transform: 'scale(1.05)', boxShadow: '0 0 25px rgba(212, 175, 55, 0.6)' },
+        },
+        'chat-icon-in': {
+            'from': { transform: 'rotate(-90deg) scale(0.5)', opacity: '0' },
+            'to': { transform: 'rotate(0deg) scale(1)', opacity: '1' },
+        },
+        'chat-icon-out': {
+            'from': { transform: 'rotate(0deg) scale(1)', opacity: '1' },
+            'to': { transform: 'rotate(90deg) scale(0.5)', opacity: '0' },
+        },
       },
       animation: {
         'gold-pulse': 'gold-pulse 2.5s infinite cubic-bezier(0.4, 0, 0.6, 1)',
@@ -84,6 +104,11 @@ tailwind.config = {
         'modal-fade-in': 'modal-fade-in 0.3s ease-out forwards',
         'modal-spring-in': 'modal-spring-in 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards',
         'modal-spring-out': 'modal-spring-out 0.3s ease-out forwards',
+        'chat-open': 'chat-widget-in 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards',
+        'chat-close': 'chat-widget-out 0.2s ease-out forwards',
+        'chat-pulse': 'chat-pulse 2s infinite cubic-bezier(0.4, 0, 0.6, 1)',
+        'chat-icon-in': 'chat-icon-in 0.2s ease-out forwards',
+        'chat-icon-out': 'chat-icon-out 0.2s ease-in forwards',
       }
     }
   }

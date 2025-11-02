@@ -4,6 +4,7 @@ import MainContent from './components/MainContent';
 import ShoppingCart from './components/ShoppingCart';
 import ProductModal from './components/ProductModal';
 import CheckoutModal from './components/CheckoutModal';
+import ChatWidget from './components/ChatWidget';
 import { Product, CartItem } from './types';
 import { MenuIcon, ShoppingCartIcon as HeaderCartIcon, SearchIcon, XIcon } from './components/icons/IconComponents';
 
@@ -342,6 +343,9 @@ const App: React.FC = () => {
           isClosing={isCheckoutModalClosing}
         />
       )}
+
+      {/* Chat Widget */}
+      <ChatWidget />
     </div>
   );
 };
