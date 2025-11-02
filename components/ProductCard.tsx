@@ -80,7 +80,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onShowD
         <img ref={imageRef} className="h-full w-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-105" src={product.imageUrl} alt={product.name} />
       </div>
       <div className="p-4 flex flex-col flex-grow">
-        <h3 className="text-xl font-bold text-primary-text line-clamp-2 min-h-[3.5rem]">
+        <h3 className="text-xl font-bold text-primary-text line-clamp-2 min-h-[1.5rem]">
           <HighlightedText text={product.name} highlight={searchQuery} />
         </h3>
         <div className="flex-grow">
