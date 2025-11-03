@@ -94,9 +94,7 @@ const Navigation: React.FC<NavigationProps> = ({ selectedCategory, onSelectCateg
           ))}
         </nav>
       </div>
-       <div className="p-4 md:p-6 border-t border-primary/10">
-          <NavLink icon={<SettingsIcon className="h-5 w-5" />} label="Налаштування" />
-       </div>
+       
     </aside>
   );
 };
