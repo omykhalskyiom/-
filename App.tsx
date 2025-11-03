@@ -6,7 +6,7 @@ import ProductModal from './components/ProductModal';
 import CheckoutModal from './components/CheckoutModal';
 import ChatWidget from './components/ChatWidget';
 import { Product, CartItem } from './types';
-import { MenuIcon, ShoppingCartIcon as HeaderCartIcon, SearchIcon, XIcon } from './components/icons/IconComponents';
+import { ShoppingCartIcon as HeaderCartIcon, SearchIcon, XIcon } from './components/icons/IconComponents';
 
 const CLOSE_ANIMATION_DURATION = 300;
 const MODAL_CLOSE_ANIMATION_DURATION = 300;
@@ -89,7 +89,6 @@ const App: React.FC = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isAnimatingOut, setIsAnimatingOut] = useState(false);
-  const [isNavOpen, setIsNavOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [flyingImage, setFlyingImage] = useState<{ url: string; rect: DOMRect } | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>('Головна');
@@ -177,8 +176,6 @@ const App: React.FC = () => {
     }
   };
   
-  const toggleNav = () => setIsNavOpen(!isNavOpen);
-  
   const handleOpenCheckout = () => {
     setIsCartOpen(false);
     setIsAnimatingOut(false);
@@ -212,8 +209,8 @@ const App: React.FC = () => {
         />
       )}
       <div className="flex">
-        {/* Desktop Navigation */}
-        <div className="hidden md:flex md:w-64 md:flex-shrink-0">
+        {/* Permanent Navigation */}
+        <div className="w-20 md:w-64 flex-shrink-0 h-screen sticky top-0">
           <Navigation 
             selectedCategory={selectedCategory} 
             onSelectCategory={setSelectedCategory} 
@@ -221,62 +218,61 @@ const App: React.FC = () => {
           />
         </div>
 
-        <div className="flex-1 flex flex-col min-w-0">
-          {/* Header for Mobile */}
-          <header className="sticky top-0 bg-background/80 backdrop-blur-sm z-20 md:hidden border-b border-primary/20">
-            <div className="px-4 h-16 flex items-center justify-between">
-              <button onClick={toggleNav} className="p-2 -ml-2 text-secondary-text hover:text-highlight">
-                <MenuIcon className="h-6 w-6" />
-              </button>
-              <h1 className="text-lg font-bold text-primary">ШВИДКА ХАВКА</h1>
-              <button ref={mobileCartRef} onClick={toggleCart} className="relative p-2 -mr-2 text-secondary-text hover:text-highlight transition-all duration-300 hover:scale-110 hover:drop-shadow-[0_0_8px_theme(colors.highlight)]">
-                <HeaderCartIcon className="h-6 w-6" />
-                {totalItemsInCart > 0 && (
-                  <span className="absolute top-1 right-1 block w-4 h-4 bg-primary text-background text-xs font-bold rounded-full flex items-center justify-center">
-                    {totalItemsInCart}
-                  </span>
-                )}
-              </button>
-            </div>
-          </header>
+        <div className="flex-1 flex flex-col min-w-0 h-screen">
+          {/* Sticky Header */}
+          <header className="sticky top-0 bg-background/80 backdrop-blur-sm z-20 border-b border-primary/20 flex-shrink-0">
+             <div className="px-4 md:px-8 h-16 flex items-center justify-between gap-4">
+                {/* Search Bar */}
+                <div className="relative flex-grow md:max-w-lg">
+                   <span className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                     <SearchIcon className="h-5 w-5 text-secondary-text" />
+                   </span>
+                   <input
+                     type="text"
+                     placeholder="Пошук..."
+                     value={searchQuery}
+                     onChange={(e) => setSearchQuery(e.target.value)}
+                     className="w-full pl-10 pr-10 py-2 bg-surface text-primary-text placeholder-secondary-text border border-primary/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                   />
+                   {searchQuery && (
+                     <button
+                         onClick={() => setSearchQuery('')}
+                         className="absolute inset-y-0 right-0 flex items-center pr-3 text-secondary-text hover:text-primary transition-colors duration-200"
+                         aria-label="Очистити пошук"
+                     >
+                         <XIcon className="h-5 w-5" />
+                     </button>
+                   )}
+               </div>
 
-          <main className="flex-grow p-4 md:p-8">
-            <div className="flex flex-col md:flex-row justify-between items-center mb-6">
-               <div className="relative w-full md:flex-grow md:max-w-lg mb-4 md:mb-0">
-                  <span className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                    <SearchIcon className="h-5 w-5 text-secondary-text" />
-                  </span>
-                  <input
-                    type="text"
-                    placeholder="Пошук..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-10 pr-10 py-2 bg-surface text-primary-text placeholder-secondary-text border border-primary/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
-                  />
-                  {searchQuery && (
-                    <button
-                        onClick={() => setSearchQuery('')}
-                        className="absolute inset-y-0 right-0 flex items-center pr-3 text-secondary-text hover:text-primary transition-colors duration-200"
-                        aria-label="Очистити пошук"
-                    >
-                        <XIcon className="h-5 w-5" />
-                    </button>
-                  )}
-              </div>
-              <button
-                ref={desktopCartRef}
-                onClick={toggleCart}
-                className="relative hidden md:flex items-center px-4 py-2 bg-surface text-primary-text font-semibold rounded-lg shadow-md border border-primary/20 hover:border-primary transition-all duration-300 ease-in-out hover:scale-105 animate-cart-glow md:ml-4"
-              >
-                <HeaderCartIcon className="h-5 w-5 mr-2 text-primary" />
-                <span>Мій кошик</span>
-                {totalItemsInCart > 0 && (
-                  <span className="ml-3 bg-primary text-background text-xs font-bold w-6 h-6 flex items-center justify-center rounded-full">
-                    {totalItemsInCart}
-                  </span>
-                )}
-              </button>
-            </div>
+               {/* Mobile Cart Button */}
+                <button ref={mobileCartRef} onClick={toggleCart} className="relative p-2 -mr-2 text-secondary-text hover:text-highlight transition-all duration-300 hover:scale-110 hover:drop-shadow-[0_0_8px_theme(colors.highlight)] md:hidden">
+                 <HeaderCartIcon className="h-6 w-6" />
+                 {totalItemsInCart > 0 && (
+                   <span className="absolute top-1 right-1 block w-4 h-4 bg-primary text-background text-xs font-bold rounded-full flex items-center justify-center">
+                     {totalItemsInCart}
+                   </span>
+                 )}
+               </button>
+
+               {/* Desktop Cart Button */}
+               <button
+                 ref={desktopCartRef}
+                 onClick={toggleCart}
+                 className="relative hidden md:flex items-center px-4 py-2 bg-surface text-primary-text font-semibold rounded-lg shadow-md border border-primary/20 hover:border-primary transition-all duration-300 ease-in-out hover:scale-105 animate-cart-glow"
+               >
+                 <HeaderCartIcon className="h-5 w-5 mr-2 text-primary" />
+                 <span>Мій кошик</span>
+                 {totalItemsInCart > 0 && (
+                   <span className="ml-3 bg-primary text-background text-xs font-bold w-6 h-6 flex items-center justify-center rounded-full">
+                     {totalItemsInCart}
+                   </span>
+                 )}
+               </button>
+             </div>
+           </header>
+
+          <main className="flex-grow p-4 md:p-8 overflow-y-auto">
             <MainContent 
               onAddToCart={handleAddToCart} 
               onShowDetails={handleShowDetails}
@@ -289,20 +285,6 @@ const App: React.FC = () => {
           </main>
         </div>
       </div>
-
-      {/* Mobile Navigation Sidebar */}
-      <div className={`fixed inset-y-0 left-0 z-40 w-64 bg-background border-r border-primary/20 transform ${isNavOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out md:hidden`}>
-        <Navigation 
-          onClose={toggleNav} 
-          selectedCategory={selectedCategory} 
-          onSelectCategory={(category) => {
-            setSelectedCategory(category);
-            toggleNav();
-          }}
-          wishlistCount={wishlist.length}
-        />
-      </div>
-      {isNavOpen && <div className="fixed inset-0 bg-black/70 z-30 md:hidden" onClick={toggleNav}></div>}
 
       {/* Shopping Cart Sidebar & Backdrop */}
       {(isCartOpen || isAnimatingOut) && (
