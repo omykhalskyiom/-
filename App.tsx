@@ -208,6 +208,7 @@ const App: React.FC = () => {
             onAnimationEnd={() => setFlyingImage(null)}
         />
       )}
+      <div className="max-w-[1200px] mx-auto px-4">
       <div className="flex">
         {/* Permanent Navigation */}
         <div className="w-20 md:w-64 flex-shrink-0 h-screen sticky top-0">
@@ -328,6 +329,7 @@ const App: React.FC = () => {
 
       {/* Chat Widget */}
       <ChatWidget />
+    </div>
     </div>
   );
 };
